@@ -18,21 +18,23 @@ import net.sf.json.JSONObject;
  * 
  */
 public class ExceptionService implements HandlerExceptionResolver{
-	
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception exception) {
 		JSONObject json = new JSONObject();
 		// 判断是否为ajax请求
-		if(!(request.getHeader("accept").indexOf("application/json")> -1 || 
+		boolean isAjax = request.getHeader("accept").indexOf("application/json")> -1 || 
 				(request.getParameter("callback") != null && request.getHeader(
-                "accept").indexOf("application/json") == -1) ) ) {
+		                "accept").indexOf("application/json") == -1);
+		if(!isAjax ) {
 			//如果这里不是ajax请求的话，则以页面的形式返回，安全起见，只对业务异常可见
 			json.put("success", false);
 			if(exception instanceof BusinessException) {
 				json.put("errorType", "BusinessExceptions");
-				json.put("code", HttpStatus.BAD_REQUEST.value());//请求出错,来自业务操作
+				//请求出错,来自业务操作
+				json.put("code", HttpStatus.BAD_REQUEST.value());
 			}else {
-				json.put("errorType", "SystemExceptions");  //服务器内部错误
+				 //服务器内部错误
+				json.put("errorType", "SystemExceptions"); 
 				json.put("code", 500);
 			}
 			json.put("errorMsg", exception.getMessage());
@@ -47,10 +49,12 @@ public class ExceptionService implements HandlerExceptionResolver{
 				PrintWriter writer = response.getWriter();
 				json.put("success",false);
 				if(exception instanceof BusinessException) {
-					json.put("code", HttpStatus.BAD_REQUEST.value()); //请求服务出错
+					//请求服务出错
+					json.put("code", HttpStatus.BAD_REQUEST.value()); 
 					json.put("errorType", "BusinessExceptions");
 				}else {
-					json.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value()); //服务器内部错误
+					//服务器内部错误
+					json.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value()); 
 					json.put("errorType", "SystemExceptions");
 				}
 				json.put("errorMsg", exception.getMessage());
