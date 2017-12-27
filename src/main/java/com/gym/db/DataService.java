@@ -6,12 +6,12 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-@Component
+@Repository
 public class DataService {
 	@Autowired
 	private DataSource dataSouce;

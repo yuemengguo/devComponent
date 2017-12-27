@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ExceptionTest {
-	@RequestMapping("/index.html")
+	@RequestMapping("/index.do")
 	public String getIndex(HttpServletRequest request) throws Exception {
-//		return "exceptions/index";
-		throw new Exception("有问题");
+		return "exceptions/index";
+//		throw new Exception("有问题");
 	}
 	
-	@RequestMapping(value="/getJson.html",method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value="/getJson.do",method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public String getJson(String callback) throws BusinessException {
 //		JSONObject json = new JSONObject();

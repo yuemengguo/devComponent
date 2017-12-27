@@ -9,27 +9,86 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <servlet-name>springmvc</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:/spring/springmvc-servlet.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>springmvc</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
+    <!--如果你的DispatcherServlet拦截"/"，为了实现REST风格，拦截了所有的请求，那么同时对*.js,*.jpg等静态文件的访问也就被拦截了。-->  
+    <!--方案一：激活Tomcat的defaultServlet来处理静态文件-->  
+    <!--要写在DispatcherServlet的前面， 让 defaultServlet先拦截请求，这样请求就不会进入Spring了，我想性能是最好的吧。-->  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.css</url-pattern>  
+    </servlet-mapping>  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.swf</url-pattern>  
+    </servlet-mapping>  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.gif</url-pattern>  
+    </servlet-mapping>  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.jpg</url-pattern>  
+    </servlet-mapping>  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.png</url-pattern>  
+    </servlet-mapping>  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.js</url-pattern>  
+    </servlet-mapping>  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.html</url-pattern>  
+    </servlet-mapping>  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.xml</url-pattern>  
+    </servlet-mapping>  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.json</url-pattern>  
+    </servlet-mapping>  
+    <servlet-mapping>  
+        <servlet-name>default</servlet-name>  
+        <url-pattern>*.map</url-pattern>  
+    </servlet-mapping> 
+    
+    <!-- 请求拦截  -->
+	 <servlet>
+	   <servlet-name>springmvc</servlet-name>
+	   <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	   <init-param>
+	     <param-name>contextConfigLocation</param-name>
+	     <param-value>classpath:/spring/springmvc-servlet.xml</param-value>
+	   </init-param>
+	   <load-on-startup>1</load-on-startup>
+	 </servlet>
+	 <servlet-mapping>
+	   <servlet-name>springmvc</servlet-name>
+	   <url-pattern>/</url-pattern>
+	 </servlet-mapping>
+ 
   
-  <!-- spring ApplicationContext的配置 -->
+  <listener>
+     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> 
+  </listener>
+  
+  <!--2、部署applicationContext的xml文件-->  
+    <!--如果在web.xml中不写任何参数配置信息，默认的路径是"/WEB-INF/applicationContext.xml，  
+    在WEB-INF目录下创建的xml文件的名称必须是applicationContext.xml。  
+    如果是要自定义文件名可以在web.xml里加入contextConfigLocation这个context参数：  
+    在<param-value> </param-value>里指定相应的xml文件名，如果有多个xml文件，可以写在一起并以“,”号分隔。  
+    也可以这样applicationContext-*.xml采用通配符，比如这那个目录下有applicationContext-ibatis-base.xml，  
+    applicationContext-action.xml，applicationContext-ibatis-dao.xml等文件，都会一同被载入。  
+    在ContextLoaderListener中关联了ContextLoader这个类，所以整个加载配置过程由ContextLoader来完成。--> 
+  
+  <!-- spring ApplicationContext的配置   -->
   <context-param>
 	<param-name>contextConfigLocation</param-name>   
 	<param-value>classpath:/spring/spring-context-*.xml</param-value>   
   </context-param>
+
   
- 
   <!-- 乱码过滤器 -->
   <filter>
     <filter-name>characterEncoding</filter-name>
