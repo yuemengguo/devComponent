@@ -1,7 +1,7 @@
 package com.gym.exceptions;
 
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 自定义异常

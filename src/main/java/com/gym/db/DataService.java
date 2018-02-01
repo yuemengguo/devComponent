@@ -4,12 +4,13 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+
 
 @Repository
 public class DataService {
@@ -36,7 +37,7 @@ public class DataService {
 		if(list.size() == 0) {
 			return json;
 		}else {
-			return JSONObject.fromObject(list.get(0));
+			return new JSONObject(list.get(0));
 		}
 	}
 	
@@ -52,7 +53,7 @@ public class DataService {
 		if(list.size() == 0) {
 			return jsonArray;
 		}else{
-			return JSONArray.fromObject(list);
+			return new JSONArray(list);
 		}
 	}
 	

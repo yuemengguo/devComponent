@@ -21,11 +21,47 @@
 	<context:component-scan base-package="com.gym.action"/>
 	<context:component-scan base-package="com.gym.base"/>
 	 
-	<!-- 视图解析器-->
+	<!-- 视图解析器
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/template/"/>
 		<property name="suffix" value=".jsp"/>
 	</bean>
+	-->
+	 <!-- freemarker的配置 -->  
+     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">  
+       <property name="templateLoaderPath" value="/WEB-INF/template/" />  
+       <property name="defaultEncoding" value="utf-8" />  
+       <property name="freemarkerSettings">  
+       <props>  
+        <prop key="template_update_delay">10</prop>  
+        <prop key="locale">zh_CN</prop>  
+        <prop key="datetime_format">yyyy-MM-dd</prop>  
+        <prop key="date_format">yyyy-MM-dd</prop>  
+        <prop key="number_format">#.##</prop>  
+       </props>  
+      </property>  
+     </bean>  
+     <!-- FreeMarker视图解析   如返回student。。在这里配置后缀名ftl和视图解析器。。-->  
+     <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">  
+        
+      <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"></property>  
+        
+      <property name="suffix" value=".ftl.htm" />  
+      <property name="contentType" value="text/html;charset=utf-8" />  
+      <property name="exposeRequestAttributes" value="true" />  
+      <property name="exposeSessionAttributes" value="true" />  
+      <property name="exposeSpringMacroHelpers" value="true" />  
+     </bean>    
+	
+	 <!-- 文件上传表单的视图解析器 --> 
+	 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	   <!-- 设置上传编码 -->
+	   <property name="defaultEncoding" value="utf-8"/>
+	   <!-- 设置上传文件大小  5MB-->
+	   <property name="maxUploadSize" value="5242880"/>
+	 </bean>
+	
+
 	
 	<bean id="exceptionResolver" class="com.gym.exceptions.ExceptionService"></bean>
 	

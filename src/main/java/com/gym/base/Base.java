@@ -7,5 +7,4 @@ import com.gym.db.DataService;
 public class Base {
 	@Autowired
 	public DataService dataService;
-	
 }
